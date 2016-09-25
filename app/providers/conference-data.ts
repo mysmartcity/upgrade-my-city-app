@@ -24,7 +24,7 @@ export class ConferenceData {
       //
       // don't sync more often than once a day
       if (timestampDiff > syncInterval) {
-        console.log('Last sync was more tahn one day ago. Resynching... ');
+        console.log('Last sync was more than one day ago. Resynching... ');
       } else {
         var data = localStorage.getItem('allData');
         if (data) {
@@ -47,12 +47,41 @@ export class ConferenceData {
         // and save the data for later reference
         var allData = res.json();
 
-        localStorage.setItem('allData', JSON.stringify( allData ));
+        localStorage.setItem('allData', res.text() );
         localStorage.setItem('syncTimestamp', (new Date()).getTime().toString());
+
+        //
+        // Verify html content
+        if (allData.aboutPageLastUpdate) {
+          this.verifyHtmlContent(allData.aboutPageLastUpdate);
+        }
 
         this.data = this.processData( allData );
         resolve( this.data );
       });
+    });
+  }
+
+  verifyHtmlContent(aboutPageLastUpdate) {
+    var htmlSyncDate = localStorage.getItem('htmlSync');
+    if (htmlSyncDate) {
+      htmlSyncDate = new Date( parseInt( htmlSyncDate, 10 ) );
+
+      if ( htmlSyncDate > (new Date( aboutPageLastUpdate )) ) {
+        //
+        // sync html
+        this.syncHtml();
+      }
+    } else {
+      this.syncHtml();
+    }
+  }
+
+  syncHtml() {
+    console.log('reading new html');
+    this.http.get('data/about.html').subscribe(res => {
+      localStorage.setItem('aboutPageContent', res.text());
+      localStorage.setItem('htmlSync', new Date().getTime().toString());
     });
   }
 
