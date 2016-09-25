@@ -1,0 +1,21 @@
+<ion-header no-shadow>
+
+</ion-header>
+
+<ion-content no-bounce>
+
+  <ion-slides (ionWillChange)="onSlideChangeStart($event)">
+
+    <ion-slide>
+      <img src="img/umc-logo600.png" class="slide-image"/>
+	  <h2 class="slide-title">2016</h2>
+      <h2 class="slide-title">If not ME, than WHO?</h2>
+      <button large clear (click)="startApp()">
+        Continue
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+    </ion-slide>
+	
+  </ion-slides>
+ 
+</ion-content>

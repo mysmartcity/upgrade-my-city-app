@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Projects</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="outer-content project-list">
+  <ion-card *ngFor="let project of projects" class="project">
+
+    <ion-card-header>
+      <ion-item>
+        <ion-avatar item-left>
+          <img [src]="project.profilePic">
+        </ion-avatar>
+        {{project.name}}
+      </ion-item>
+    </ion-card-header>
+
+    <ion-card-content class="outer-content">
+      <ion-list>
+        <button ion-item *ngFor="let session of project.sessions" (click)="goToSessionDetail(session)">
+          <h3>{{session.name}}</h3>
+        </button>
+        <button ion-item (click)="goToProjectDetail(project)">
+          <h3>Afla mai multe despre {{project.name}}</h3>
+        </button>
+      </ion-list>
+    </ion-card-content>
+
+<!--	
+    <ion-item>
+      <button (click)="goToSpeakerTwitter(speaker)" clear item-left>
+        <ion-icon name="logo-twitter"></ion-icon>
+        Tweet
+      </button>
+      <button (click)="openSpeakerShare(speaker)" clear item-right>
+        <ion-icon name="share"></ion-icon>
+        Share
+      </button>
+    </ion-item>
+-->
+  </ion-card>
+</ion-content>
