@@ -12,6 +12,26 @@ export class ConferenceData {
   constructor(public http: Http, public user: UserData) {}
 
   load() {
+    if ( ! this.data ) {
+      //
+      // try to get data from localStorage
+      var lastSync = parseInt(localStorage.getItem('syncTimestamp'), 10);
+
+      var timestampDiff = new Date().getTime() - lastSync;
+      var syncInterval = 1000 * 60 * 60 * 24;
+      // var syncInterval = 1000;
+
+      //
+      // don't sync more often than once a day
+      if (timestampDiff > syncInterval) {
+        console.log('Last sync was more tahn one day ago. Resynching... ');
+      } else {
+        var data = localStorage.getItem('allData');
+        if (data) {
+          this.data = this.processData(JSON.parse(data));
+        }
+      }
+    }
     if (this.data) {
       // already loaded data
       return Promise.resolve(this.data);
@@ -25,8 +45,13 @@ export class ConferenceData {
       this.http.get('data/data.json').subscribe(res => {
         // we've got back the raw data, now generate the core schedule data
         // and save the data for later reference
-        this.data = this.processData(res.json());
-        resolve(this.data);
+        var allData = res.json();
+
+        localStorage.setItem('allData', JSON.stringify( allData ));
+        localStorage.setItem('syncTimestamp', (new Date()).getTime().toString());
+
+        this.data = this.processData( allData );
+        resolve( this.data );
       });
     });
   }

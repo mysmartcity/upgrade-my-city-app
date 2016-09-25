@@ -30,12 +30,11 @@ class ConferenceApp {
   // the left menu only works after login
   // the login page disables the left menu
   appPages: PageObj[] = [
-	{ title: 'Eveniment', component: TabsPage, icon: 'home' },
+    { title: 'Eveniment', component: TabsPage, icon: 'home' },
     { title: 'Program', component: TabsPage, index: 1, icon: 'calendar' },
     { title: 'Speakeri', component: TabsPage, index: 2, icon: 'contacts' },
-	{ title: 'Proiecte', component: TabsPage, index: 3, icon: 'list-box' },
-    //{ title: 'Map', component: TabsPage, index: 2, icon: 'map' },
-    
+    { title: 'Proiecte', component: TabsPage, index: 3, icon: 'list-box' },
+    // { title: 'Map', component: TabsPage, index: 2, icon: 'map' },
   ];
   loggedInPages: PageObj[] = [
     { title: 'Preferinte', component: AccountPage, icon: 'person' },
